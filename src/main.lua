@@ -5,6 +5,7 @@
 -- Constantes
 LARGEUR_ECRAN = 800
 HAUTEUR_ECRAN = 600
+DUREE_IMMOBILISATION = 1
 
 local etatJeu = 'menu'
 local chrono = 0
@@ -22,7 +23,7 @@ joueureuse.vy = 0
 joueureuse.acceleration = 500
 joueureuse.vitessemax = 500
 joueureuse.touche = false
-joueureuse.delai = 1 
+joueureuse.delai = 0 
 
 -- Sprites Ennemis
 
@@ -54,7 +55,7 @@ function creerEnnemi()
   end
   ennemi.vy = -100 - math.random(100)
   ennemi.touche = false
-  ennemi.delai = 1
+  ennemi.delai = DUREE_IMMOBILISATION
 
   table.insert(lstEnnemis, ennemi)
 
@@ -80,6 +81,7 @@ function initJeu()
   joueureuse.x = (LARGEUR_ECRAN - joueureuse.l)/2
   joueureuse.y = HAUTEUR_ECRAN - joueureuse.h * 2
   joueureuse.touche = false
+  joueureuse.delai = DUREE_IMMOBILISATION
 
   -- Initialisation ennemis
   lstEnnemis = {}
@@ -160,12 +162,13 @@ function majJoueureuse(dt)
       joueureuse.y = HAUTEUR_ECRAN - joueureuse.h
     end
 
-  elseif joueureuse.touche == true then
+  else
 
     if joueureuse.delai > 0 then
       joueureuse.delai = joueureuse.delai - dt
     else
       joueureuse.touche = false
+      joueureuse.delai = DUREE_IMMOBILISATION 
     end
 
   end

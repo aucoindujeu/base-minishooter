@@ -1,5 +1,7 @@
 -- TO DO :
 -- ajouter info (chrono, nombre ennemis tués, nombre crashes)
+-- son tir, explosion
+-- image fond (scrolling infini ?)
 --
 -- **********************************
 -- Variables utilisées dans le jeu
@@ -36,6 +38,8 @@ local lstEnnemis = {}
 -- Tirs
 
 local lstTirs = {}
+
+local sonExplosion = love.audio.newSource('sons/explosion.wav', 'static')
 
 -- *****************
 -- Fonctions
@@ -238,6 +242,7 @@ function majEnnemis(dt)
                         then
         ennemi.touche = true
         joueureuse.touche = true
+        sonExplosion:play()
       end
 
       if ennemi.touche == true then
@@ -278,6 +283,7 @@ function majTirs(dt)
                           tir.h) then
           ennemi.touche = true
           table.remove(lstTirs, n)
+          sonExplosion:play()
           break -- on sort de la boucle vu que le tir a disparu
         end
       end

@@ -1,6 +1,4 @@
 -- TO DO :
--- effacer ennemis sortis de l’écran
--- annuler collision avec vaisseau si ennemi abattu par un tir
 -- ajouter info (chrono, nombre ennemis tués, nombre crashes)
 --
 -- **********************************
@@ -225,25 +223,29 @@ function majEnnemis(dt)
     ennemi.x = ennemi.x + ennemi.vx * dt
     ennemi.y = ennemi.y - ennemi.vy * dt
     
-    if testeCollision(ennemi.x, 
-                      ennemi.y, 
-                      ennemi.l, 
-                      ennemi.h, 
-                      joueureuse.x, 
-                      joueureuse.y, 
-                      joueureuse.l, 
-                      joueureuse.h) 
-                    and ennemi.touche == false
-                      then
-      ennemi.touche = true
-      joueureuse.touche = true
-    end
+    if ennemi.y - ennemi.h > HAUTEUR_ECRAN then
+      table.remove(lstEnnemis, n)
+    else
+      if testeCollision(ennemi.x, 
+                        ennemi.y, 
+                        ennemi.l, 
+                        ennemi.h, 
+                        joueureuse.x, 
+                        joueureuse.y, 
+                        joueureuse.l, 
+                        joueureuse.h) 
+                      and ennemi.touche == false
+                        then
+        ennemi.touche = true
+        joueureuse.touche = true
+      end
 
-    if ennemi.touche == true then
-      if ennemi.delai > 0 then
-        ennemi.delai = ennemi.delai - dt
-      else
-        table.remove(lstEnnemis, n)
+      if ennemi.touche == true then
+        if ennemi.delai > 0 then
+          ennemi.delai = ennemi.delai - dt
+        else
+          table.remove(lstEnnemis, n)
+        end
       end
     end
   end
@@ -340,6 +342,7 @@ function afficheEnnemis()
     end
   end
 
+  love.graphics.print(tostring(#lstEnnemis), 10, 10)
 
 end
 
@@ -348,14 +351,6 @@ function afficheTirs()
 
   for k, tir in ipairs(lstTirs) do
     love.graphics.draw(tir.img, tir.x, tir.y)
-    
-    love.graphics.print('tir.x = '..tostring(tir.x), 10, 10)
-    love.graphics.print('tir.y = '..tostring(tir.y), 10, 40)
-    love.graphics.print('tir.vy = '..tostring(tir.vy), 10, 70)
-    love.graphics.print('N tir = '..tostring(#lstTirs), 10, 100)
-    love.graphics.print('chrono = '..tostring(joueureuse.chronoTir), 10, 130)
-
-
   end
 
 end

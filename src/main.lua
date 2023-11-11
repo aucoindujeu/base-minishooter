@@ -6,12 +6,13 @@
 LARGEUR_ECRAN = 800
 HAUTEUR_ECRAN = 600
 
-etatJeu = 'menu'
-
+local etatJeu = 'menu'
+local chrono = 0
+local chronoDepart = 5
 -- Sprite Joueur
-joueureuse = {}
+local joueureuse = {}
 joueureuse.img = love.graphics.newImage('images/joueureuse.png')
-joueureuse.imgExplosion = love.graphics.newImage('images/explosion.png')
+joueureuse.imgExplosion = love.graphics.newImage('images/explosion_joueureuse.png')
 joueureuse.l = joueureuse.img:getWidth()
 joueureuse.h = joueureuse.img:getHeight()
 joueureuse.x = 0 
@@ -21,18 +22,44 @@ joueureuse.vy = 0
 joueureuse.acceleration = 500
 joueureuse.vitessemax = 500
 joueureuse.touche = false
+joueureuse.delai = 1 
 
 -- Sprites Ennemis
 
-lstEnnemis = {}
+local lstEnnemis = {}
 
 -- Tirs
 
-lstTirs = {}
+local lstTirs = {}
 
 -- *****************
 -- Fonctions
 -- *****************
+
+-- Créations ennemis
+
+function creerEnnemi()
+
+  local ennemi = {}
+  ennemi.img = love.graphics.newImage('images/ennemi.png')
+  ennemi.imgExplosion = love.graphics.newImage('images/explosion_ennemi.png')
+  ennemi.h = ennemi.img:getHeight()
+  ennemi.l = ennemi.img:getWidth()
+  ennemi.x = math.random(LARGEUR_ECRAN)
+  ennemi.y = 0
+  if ennemi.x > LARGEUR_ECRAN/2 then
+    ennemi.vx = - 50 - math.random(20)
+  else
+    ennemi.vx = 50 + math.random(20)
+  end
+  ennemi.vy = -100 - math.random(100)
+  ennemi.touche = false
+  ennemi.delai = 1
+
+  table.insert(lstEnnemis, ennemi)
+
+end
+
 
 -- test collision méthode bounding boxes
 function testeCollision(pX1, pY1, pL1, pH1, pX2, pY2, pL2, pH2)
@@ -46,10 +73,19 @@ end
 -- ****************************
 
 function initJeu()
-  
+
+  chrono = chronoDepart
+ 
+  -- Initialisation joueureuse
   joueureuse.x = (LARGEUR_ECRAN - joueureuse.l)/2
   joueureuse.y = HAUTEUR_ECRAN - joueureuse.h * 2
   joueureuse.touche = false
+
+  -- Initialisation ennemis
+  lstEnnemis = {}
+
+  -- Initialisation tirs
+  lstTirs = {}
 
 end
 
@@ -126,11 +162,51 @@ function majJoueureuse(dt)
 
   elseif joueureuse.touche == true then
 
+    if joueureuse.delai > 0 then
+      joueureuse.delai = joueureuse.delai - dt
+    else
+      joueureuse.touche = false
+    end
+
   end
 end
 
 -- MAJ ENNEMIS
 function majEnnemis(dt)
+
+  chrono = chrono - dt
+
+  if chrono < 0 then
+    creerEnnemi(lstEnnemis)
+    chrono = chronoDepart - math.random(300) * dt 
+  end
+
+  for n = #lstEnnemis, 1, -1 do
+    local ennemi = lstEnnemis[n]
+    ennemi.x = ennemi.x + ennemi.vx * dt
+    ennemi.y = ennemi.y - ennemi.vy * dt
+    
+    if testeCollision(ennemi.x, 
+                      ennemi.y, 
+                      ennemi.l, 
+                      ennemi.h, 
+                      joueureuse.x, 
+                      joueureuse.y, 
+                      joueureuse.l, 
+                      joueureuse.h) then
+      ennemi.touche = true
+      joueureuse.touche = true
+    end
+
+    if ennemi.touche == true then
+      if ennemi.delai > 0 then
+        ennemi.delai = ennemi.delai - dt
+      else
+        table.remove(lstEnnemis, n)
+      end
+    end
+  end
+
 end
 
 -- MAJ TIRS
@@ -176,7 +252,7 @@ function afficheJoueureuse()
 
   if joueureuse.touche == false then
     love.graphics.draw(joueureuse.img, joueureuse.x, joueureuse.y)
-  elseif joueureuse.touche == true then
+  else
     love.graphics.draw(joueureuse.imgExplosion, joueureuse.x, joueureuse.y)
   end
 
@@ -184,6 +260,16 @@ end
 
 -- AFFICHAGE ENNEMIS
 function afficheEnnemis()
+
+  for k, ennemi in ipairs(lstEnnemis) do
+    if ennemi.touche == false then
+      love.graphics.draw(ennemi.img, ennemi.x, ennemi.y)
+    else
+      love.graphics.draw(ennemi.imgExplosion, ennemi.x, ennemi.y)
+    end
+  end
+
+
 end
 
 -- AFFICHAGE TIRS
@@ -212,6 +298,7 @@ function love.draw()
     love.graphics.print('j.y = '..tostring(joueureuse.y), 10, 40)
     love.graphics.print('j.vx = '..tostring(joueureuse.vx), 10, 70)
     love.graphics.print('j.vy = '..tostring(joueureuse.vy), 10, 100)
+    love.graphics.print('chrono = '..tostring(chrono), 10, 130)
 
   elseif etatJeu == 'game over' then
 

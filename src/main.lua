@@ -17,6 +17,12 @@ local cmptEnnemis = 0
 local cmptAbattus = 0
 local cmptAbordages = 0
 
+-- fond / scrolling infini
+local scrolling = {}
+scrolling.camera = 0
+scrolling.img = love.graphics.newImage('images/fond.png')
+scrolling.h = scrolling.img:getHeight()
+
 -- Sprite Joueur
 local joueureuse = {}
 joueureuse.img = love.graphics.newImage('images/joueureuse.png')
@@ -309,6 +315,14 @@ function love.update(dt)
 
   elseif etatJeu == 'en jeu' then
 
+    -- fond / scrolling
+
+    scrolling.camera = scrolling.camera + 30 * dt
+    if scrolling.camera >= scrolling.h then
+      scrolling.camera = 0
+    end
+
+    -- éléments du gameplay
     majJoueureuse(dt) 
 
     majEnnemis(dt)
@@ -387,6 +401,13 @@ function love.draw()
     afficheMenu()
 
   elseif etatJeu == 'en jeu' then
+
+    --affichage fond
+
+    love.graphics.draw(scrolling.img, 0, scrolling.camera - scrolling.h)
+    love.graphics.draw(scrolling.img,0, scrolling.camera)
+
+    -- affichage élément gameplay
 
     afficheJoueureuse()
     afficheEnnemis()

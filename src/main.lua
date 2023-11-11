@@ -1,6 +1,4 @@
 -- TO DO :
--- ajouter info (chrono, nombre ennemis tués, nombre crashes)
--- son tir, explosion
 -- image fond (scrolling infini ?)
 --
 -- **********************************
@@ -13,8 +11,12 @@ HAUTEUR_ECRAN = 600
 DUREE_IMMOBILISATION = 1
 
 local etatJeu = 'menu'
-local chrono = 0
-local chronoDepart = 5
+local chronoEnnemis = 0
+local iniChronoEnnemis = 5
+local cmptEnnemis = 0
+local cmptAbattus = 0
+local cmptAbordages = 0
+
 -- Sprite Joueur
 local joueureuse = {}
 joueureuse.img = love.graphics.newImage('images/joueureuse.png')
@@ -97,7 +99,10 @@ end
 
 function initJeu()
 
-  chrono = chronoDepart
+  chronoEnnemis = iniChronoEnnemis 
+  cmptEnnemis = 0
+  cmptAbattus = 0
+  cmptAbordage = 0
  
   -- Initialisation joueureuse
   joueureuse.x = (LARGEUR_ECRAN - joueureuse.l)/2
@@ -105,7 +110,7 @@ function initJeu()
   joueureuse.touche = false
   joueureuse.delai = DUREE_IMMOBILISATION
   joueureuse.chronoTir = 0
-
+  
   -- Initialisation ennemis
   lstEnnemis = {}
 
@@ -120,7 +125,7 @@ function love.load()
   love.window.setMode(LARGEUR_ECRAN, HAUTEUR_ECRAN)
   love.window.setTitle('Mini shooter - Code Club CimeLab - Au Coin du jeu')
   
-  police = love.graphics.newFont('fontes/police.ttf', 20)
+  police = love.graphics.newFont('fontes/police.ttf', 15)
   love.graphics.setFont(police)
 
   initJeu()
@@ -215,11 +220,12 @@ end
 -- MAJ ENNEMIS
 function majEnnemis(dt)
 
-  chrono = chrono - dt
+  chronoEnnemis = chronoEnnemis - dt
 
-  if chrono < 0 then
+  if chronoEnnemis < 0 then
     creerEnnemi(lstEnnemis)
-    chrono = chronoDepart - math.random(400) * dt 
+    cmptEnnemis = cmptEnnemis + 1
+    chronoEnnemis = iniChronoEnnemis- math.random(400) * dt 
   end
 
   for n = #lstEnnemis, 1, -1 do
@@ -242,6 +248,7 @@ function majEnnemis(dt)
                         then
         ennemi.touche = true
         joueureuse.touche = true
+        cmptAbordages = cmptAbordages + 1
         sonExplosion:play()
       end
 
@@ -283,6 +290,7 @@ function majTirs(dt)
                           tir.h) then
           ennemi.touche = true
           table.remove(lstTirs, n)
+          cmptAbattus = cmptAbattus + 1
           sonExplosion:play()
           break -- on sort de la boucle vu que le tir a disparu
         end
@@ -306,6 +314,10 @@ function love.update(dt)
     majEnnemis(dt)
   
     majTirs(dt)
+    
+    if cmptEnnemis == 101 then --arrêt du jeu après le 100e ennemi
+      etatJeu = 'game over'
+    end
 
   end
 
@@ -348,8 +360,6 @@ function afficheEnnemis()
     end
   end
 
-  love.graphics.print(tostring(#lstEnnemis), 10, 10)
-
 end
 
 -- AFFICHAGE TIRS
@@ -363,6 +373,9 @@ end
 
 -- AFFICHAGE GAME OVER
 function afficheGameOver()
+  
+  love.graphics.printf('Votre score est de : '..tostring((cmptAbattus - cmptAbordages) * 100), 0, HAUTEUR_ECRAN/2 - 20, LARGEUR_ECRAN, 'center')
+  love.graphics.printf('Vous avez détruit '..tostring(cmptAbattus + cmptAbordages)..' ennemis sur 100, dont '..tostring(cmptAbordages)..' par abordage.', 0, HAUTEUR_ECRAN/2 + 20, LARGEUR_ECRAN, 'center')
 
 end
 
@@ -379,7 +392,11 @@ function love.draw()
     afficheEnnemis()
     afficheTirs()
 
-      elseif etatJeu == 'game over' then
+    love.graphics.print('Ennemis : '..tostring(cmptEnnemis), 10, 10)
+    love.graphics.print('Abattus : '..tostring(cmptAbattus), 10, 30)
+    love.graphics.print('Abordages : '..tostring(cmptAbordages), 10, 50)
+
+  elseif etatJeu == 'game over' then
 
     afficheGameOver()
 

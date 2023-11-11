@@ -217,7 +217,7 @@ function majEnnemis(dt)
 
   if chrono < 0 then
     creerEnnemi(lstEnnemis)
-    chrono = chronoDepart - math.random(300) * dt 
+    chrono = chronoDepart - math.random(400) * dt 
   end
 
   for n = #lstEnnemis, 1, -1 do
@@ -232,7 +232,9 @@ function majEnnemis(dt)
                       joueureuse.x, 
                       joueureuse.y, 
                       joueureuse.l, 
-                      joueureuse.h) then
+                      joueureuse.h) 
+                    and ennemi.touche == false
+                      then
       ennemi.touche = true
       joueureuse.touche = true
     end

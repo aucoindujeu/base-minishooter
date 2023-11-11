@@ -1,3 +1,8 @@
+-- TO DO :
+-- effacer ennemis sortis de l’écran
+-- annuler collision avec vaisseau si ennemi abattu par un tir
+-- ajouter info (chrono, nombre ennemis tués, nombre crashes)
+--
 -- **********************************
 -- Variables utilisées dans le jeu
 -- *********************************
@@ -24,6 +29,7 @@ joueureuse.acceleration = 500
 joueureuse.vitessemax = 500
 joueureuse.touche = false
 joueureuse.delai = 0 
+joueureuse.chronoTir = 0
 
 -- Sprites Ennemis
 
@@ -61,6 +67,20 @@ function creerEnnemi()
 
 end
 
+function creerTir()
+
+  local tir = {}
+  tir.img = love.graphics.newImage('images/tir.png')
+  tir.h = tir.img:getHeight()
+  tir.l = tir.img:getWidth()
+  tir.x = joueureuse.x + (joueureuse.l - tir.l)/2
+  tir.y = joueureuse.y
+  tir.vy = -500
+
+  table.insert(lstTirs, tir)
+
+end
+
 
 -- test collision méthode bounding boxes
 function testeCollision(pX1, pY1, pL1, pH1, pX2, pY2, pL2, pH2)
@@ -82,6 +102,7 @@ function initJeu()
   joueureuse.y = HAUTEUR_ECRAN - joueureuse.h * 2
   joueureuse.touche = false
   joueureuse.delai = DUREE_IMMOBILISATION
+  joueureuse.chronoTir = 0
 
   -- Initialisation ennemis
   lstEnnemis = {}
@@ -119,6 +140,8 @@ function majJoueureuse(dt)
 
   if joueureuse.touche == false then
 
+    -- DÉPLACEMENTS
+    -- test flèches clavier    
     if love.keyboard.isDown('up') then
       joueureuse.vy = joueureuse.vy - joueureuse.acceleration * dt
       if joueureuse.vy < - joueureuse.vitessemax then
@@ -147,9 +170,11 @@ function majJoueureuse(dt)
       end
     end
 
+    --acutalisation position du vaisseau
     joueureuse.x = joueureuse.x + joueureuse.vx * dt
     joueureuse.y = joueureuse.y + joueureuse.vy * dt
 
+    -- test collision avec bords fenêtre
     if joueureuse.x < 0 then
       joueureuse.x = 0
     elseif joueureuse.x > LARGEUR_ECRAN - joueureuse.l then
@@ -160,6 +185,17 @@ function majJoueureuse(dt)
       joueureuse.y = 0
     elseif joueureuse.y > HAUTEUR_ECRAN - joueureuse.h then
       joueureuse.y = HAUTEUR_ECRAN - joueureuse.h
+    end
+
+    -- TIRS
+    -- test barre espace clavier 
+    if joueureuse.chronoTir <= 0 then
+      if love.keyboard.isDown('space') then
+        creerTir()
+        joueureuse.chronoTir = 5
+      end
+    else
+      joueureuse.chronoTir = joueureuse.chronoTir - 10 * dt 
     end
 
   else
@@ -214,6 +250,36 @@ end
 
 -- MAJ TIRS
 function majTirs(dt)
+
+  for n = #lstTirs, 1, -1 do
+    local tir = lstTirs[n]
+    tir.y = tir.y + tir.vy * dt
+
+    -- teste si tir sorti écran
+    if tir.y < 0 - tir.h then
+      table.remove(lstTirs,n)
+
+    else
+        
+      -- alors on teste si tir touche un ennemi
+      for m = #lstEnnemis, 1, -1 do
+        local ennemi = lstEnnemis[m]
+        if testeCollision(ennemi.x,
+                          ennemi.y,
+                          ennemi.l,
+                          ennemi.h,
+                          tir.x,
+                          tir.y,
+                          tir.l,
+                          tir.h) then
+          ennemi.touche = true
+          table.remove(lstTirs, n)
+          break -- on sort de la boucle vu que le tir a disparu
+        end
+      end
+    end
+  end
+  
 end
 
 -- UPDATE
@@ -256,10 +322,10 @@ function afficheJoueureuse()
   if joueureuse.touche == false then
     love.graphics.draw(joueureuse.img, joueureuse.x, joueureuse.y)
   else
-    love.graphics.draw(joueureuse.imgExplosion, joueureuse.x, joueureuse.y)
-  end
+    love.graphics.draw(joueureuse.imgExplosion, joueureuse.x, joueureuse.y) 
+  end 
 
-end
+end 
 
 -- AFFICHAGE ENNEMIS
 function afficheEnnemis()
@@ -277,6 +343,19 @@ end
 
 -- AFFICHAGE TIRS
 function afficheTirs()
+
+  for k, tir in ipairs(lstTirs) do
+    love.graphics.draw(tir.img, tir.x, tir.y)
+    
+    love.graphics.print('tir.x = '..tostring(tir.x), 10, 10)
+    love.graphics.print('tir.y = '..tostring(tir.y), 10, 40)
+    love.graphics.print('tir.vy = '..tostring(tir.vy), 10, 70)
+    love.graphics.print('N tir = '..tostring(#lstTirs), 10, 100)
+    love.graphics.print('chrono = '..tostring(joueureuse.chronoTir), 10, 130)
+
+
+  end
+
 end
 
 -- AFFICHAGE GAME OVER
@@ -297,13 +376,7 @@ function love.draw()
     afficheEnnemis()
     afficheTirs()
 
-    love.graphics.print('j.x = '..tostring(joueureuse.x), 10, 10)
-    love.graphics.print('j.y = '..tostring(joueureuse.y), 10, 40)
-    love.graphics.print('j.vx = '..tostring(joueureuse.vx), 10, 70)
-    love.graphics.print('j.vy = '..tostring(joueureuse.vy), 10, 100)
-    love.graphics.print('chrono = '..tostring(chrono), 10, 130)
-
-  elseif etatJeu == 'game over' then
+      elseif etatJeu == 'game over' then
 
     afficheGameOver()
 

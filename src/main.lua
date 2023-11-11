@@ -16,6 +16,11 @@ joueureuse.l = joueureuse.img:getWidth()
 joueureuse.h = joueureuse.img:getHeight()
 joueureuse.x = 0 
 joueureuse.y = 0 
+joueureuse.vx = 0
+joueureuse.vy = 0
+joueureuse.acceleration = 500
+joueureuse.vitessemax = 500
+joueureuse.touche = false
 
 -- Sprites Ennemis
 
@@ -44,6 +49,7 @@ function initJeu()
   
   joueureuse.x = (LARGEUR_ECRAN - joueureuse.l)/2
   joueureuse.y = HAUTEUR_ECRAN - joueureuse.h * 2
+  joueureuse.touche = false
 
 end
 
@@ -65,24 +71,73 @@ end
 -- MISE À JOUR JEU (update)
 -- ******************
 
+-- MAJ MENU
 function majMenu()
 
 end
 
-
+-- MAJ JOUEUREUSE
 function majJoueureuse(dt)
 
+  if joueureuse.touche == false then
+
+    if love.keyboard.isDown('up') then
+      joueureuse.vy = joueureuse.vy - joueureuse.acceleration * dt
+      if joueureuse.vy < - joueureuse.vitessemax then
+        joueureuse.vy = - joueureuse.vitessemax
+      end
+    end
+
+    if love.keyboard.isDown('down') then
+      joueureuse.vy = joueureuse.vy + joueureuse.acceleration * dt
+      if joueureuse.vy > joueureuse.vitessemax then
+        joueureuse.vy = joueureuse.vitessemax
+      end
+    end
+
+    if love.keyboard.isDown('right') then
+      joueureuse.vx = joueureuse.vx + joueureuse.acceleration * dt
+      if joueureuse.vx > joueureuse.vitessemax then
+        joueureuse.vx = joueureuse.vitessemax
+      end
+    end
+
+    if love.keyboard.isDown('left') then
+      joueureuse.vx = joueureuse.vx - joueureuse.acceleration * dt
+      if joueureuse.vx < -joueureuse.vitessemax then
+        joueureuse.vx = -joueureuse.vitessemax
+      end
+    end
+
+    joueureuse.x = joueureuse.x + joueureuse.vx * dt
+    joueureuse.y = joueureuse.y + joueureuse.vy * dt
+
+    if joueureuse.x < 0 then
+      joueureuse.x = 0
+    elseif joueureuse.x > LARGEUR_ECRAN - joueureuse.l then
+      joueureuse.x = LARGEUR_ECRAN - joueureuse.l
+    end
+
+    if joueureuse.y < 0 then
+      joueureuse.y = 0
+    elseif joueureuse.y > HAUTEUR_ECRAN - joueureuse.h then
+      joueureuse.y = HAUTEUR_ECRAN - joueureuse.h
+    end
+
+  elseif joueureuse.touche == true then
+
+  end
 end
 
-
+-- MAJ ENNEMIS
 function majEnnemis(dt)
 end
 
-
+-- MAJ TIRS
 function majTirs(dt)
 end
 
-
+-- UPDATE
 function love.update(dt)
   
   if etatJeu == 'menu' then
@@ -105,6 +160,7 @@ end
 -- AFFICHAGE
 -- ***************
 
+-- AFFICHAGE MENU
 function afficheMenu()
 
   love.graphics.printf('appuyer sur `espace` pour lancer le jeu',
@@ -115,27 +171,31 @@ function afficheMenu()
 
 end
 
+-- AFFICHAGE JOUEUREUSE
+function afficheJoueureuse()
 
-function afficheJoueur()
-
-  love.graphics.draw(joueureuse.img, joueureuse.x, joueureuse.y)
+  if joueureuse.touche == false then
+    love.graphics.draw(joueureuse.img, joueureuse.x, joueureuse.y)
+  elseif joueureuse.touche == true then
+    love.graphics.draw(joueureuse.imgExplosion, joueureuse.x, joueureuse.y)
+  end
 
 end
 
-
+-- AFFICHAGE ENNEMIS
 function afficheEnnemis()
 end
 
-
+-- AFFICHAGE TIRS
 function afficheTirs()
 end
 
-
+-- AFFICHAGE GAME OVER
 function afficheGameOver()
 
 end
 
-
+-- DRAW
 function love.draw()
 
   if etatJeu == 'menu' then
@@ -144,9 +204,14 @@ function love.draw()
 
   elseif etatJeu == 'en jeu' then
 
-    afficheJoueur()
+    afficheJoueureuse()
     afficheEnnemis()
     afficheTirs()
+
+    love.graphics.print('j.x = '..tostring(joueureuse.x), 10, 10)
+    love.graphics.print('j.y = '..tostring(joueureuse.y), 10, 40)
+    love.graphics.print('j.vx = '..tostring(joueureuse.vx), 10, 70)
+    love.graphics.print('j.vy = '..tostring(joueureuse.vy), 10, 100)
 
   elseif etatJeu == 'game over' then
 

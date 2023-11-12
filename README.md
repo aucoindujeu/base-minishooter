@@ -32,3 +32,7 @@ En faire une version exécutable sur le web (avec love.js) :
 ## Licence
 
 Ce projet est distribué d'après les termes de la licence [GNU AGPL version 3](./LICENSE.txt). Même si vous n'en avez pas l'obligation, merci de bien vouloir mentionner que le projet a été initialement créé par la ludothèque de Briançon [Au Coin du Jeu](https://www.aucoindujeu05.fr/) ☺️
+
+Les bibliothèques et éléments tiers (polices, etc.) sont distribués sous leur licence propre.
+
+La police Press Start, par [Codeman38](http://www.zone38.net/font/#pressstart) est distribuée sous la licence [OFL](https://scripts.sil.org/cms/scripts/page.php?item_id=OFL_web).

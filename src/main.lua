@@ -108,7 +108,7 @@ function initJeu()
   chronoEnnemis = iniChronoEnnemis 
   cmptEnnemis = 0
   cmptAbattus = 0
-  cmptAbordage = 0
+  cmptAbordages = 0
  
   -- Initialisation joueureuse
   joueureuse.x = (LARGEUR_ECRAN - joueureuse.l)/2
@@ -437,6 +437,7 @@ function love.keypressed(key)
 
   if key== 'space' and etatJeu == 'menu' then
     etatJeu = 'en jeu'
+    initJeu()
   end
 
   if key == 'return' and etatJeu == 'game over' then

@@ -388,8 +388,26 @@ end
 -- AFFICHAGE GAME OVER
 function afficheGameOver()
   
-  love.graphics.printf('Votre score est de : '..tostring((cmptAbattus - cmptAbordages) * 100), 0, HAUTEUR_ECRAN/2 - 20, LARGEUR_ECRAN, 'center')
-  love.graphics.printf('Vous avez détruit '..tostring(cmptAbattus + cmptAbordages)..' ennemis sur 100, dont '..tostring(cmptAbordages)..' par abordage.', 0, HAUTEUR_ECRAN/2 + 20, LARGEUR_ECRAN, 'center')
+  love.graphics.printf('Votre score est de : '
+                        ..tostring((cmptAbattus - cmptAbordages) * 100), 
+                        0, 
+                        HAUTEUR_ECRAN/2 - 20, 
+                        LARGEUR_ECRAN, 
+                        'center')
+  love.graphics.printf('Vous avez détruit '
+                        ..tostring(cmptAbattus + cmptAbordages)
+                        ..' ennemis sur 100, dont '
+                        ..tostring(cmptAbordages)
+                        ..' par abordage.', 
+                        0, 
+                        HAUTEUR_ECRAN/2 + 20, 
+                        LARGEUR_ECRAN, 
+                        'center')
+  love.graphics.printf('Appuyez sur ‘Entrée‘ pour revenir au menu.',
+                        0,
+                        HAUTEUR_ECRAN/2 + 60,
+                        LARGEUR_ECRAN,
+                        'center')
 
 end
 

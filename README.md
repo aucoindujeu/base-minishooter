@@ -1,6 +1,8 @@
 # Mini Shooter [base]
 
-Base de jeu, shoot’em up minimaliste. Créé pour servir de support lors des ateliers « Code Club » du [Cimelab](https://www.aucoindujeu05.fr/fablab/) à Briançon. Les graphismes et les sons sont minimalistes, car le but de l’atelier est de l’amélirorer.
+Base de jeu, shoot’em up minimaliste. Créé pour servir de support lors des ateliers « Code Club » du [Cimelab](https://www.aucoindujeu05.fr/fablab/) à Briançon. Les graphismes et les sons sont minimalistes, car le but de l’atelier est de les améliorer.
+
+![Capture écran jeu](./src/images/Capture.png)
 
 Il se joue au clavier (flèches directionnelles pour déplacer le vaisseau - il y a un brin d’inertie ;) - et barre espace pour tirer). Vous faites face à une vague de 100 ennemis. À la fin, on décompte le nombre d’ennemis que vous aurez abattus, le nombre d’abordages (collision avec un ennemi) constitue un malus pour le score.
 
@@ -33,6 +35,6 @@ En faire une version exécutable sur le web (avec love.js) :
 
 Ce projet est distribué d'après les termes de la licence [GNU AGPL version 3](./LICENSE.txt). Même si vous n'en avez pas l'obligation, merci de bien vouloir mentionner que le projet a été initialement créé par la ludothèque de Briançon [Au Coin du Jeu](https://www.aucoindujeu05.fr/) ☺️
 
-Les bibliothèques et éléments tiers (polices, etc.) sont distribués sous leur licence propre.
+Les bibliothèques et éléments tiers (polices, etc.) sont distribués sous leurs licences propres.
 
-La police Press Start, par [Codeman38](http://www.zone38.net/font/#pressstart) est distribuée sous la licence [OFL](https://scripts.sil.org/cms/scripts/page.php?item_id=OFL_web).
+La police Press Start, par [Codeman38](http://www.zone38.net/font/#pressstart), est distribuée sous la licence [OFL](https://scripts.sil.org/cms/scripts/page.php?item_id=OFL_web).

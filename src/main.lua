@@ -1,5 +1,14 @@
--- TO DO :
--- image fond (scrolling infini ?)
+-- Les manettes de jeu ne son pas reconnues sur la version
+-- en ligne générée par Love.js, on désactive donc ces manettes
+-- si on détecte que l’environnement d’exécution est en ligne
+
+-- Are we in love.js? Joysticks are not supported there.
+-- https://github.com/Davidobot/love.js/issues/74
+if love.system.getOS() == "web" then
+  -- Joysticks don't work in love.js
+  -- https://github.com/Davidobot/love.js/issues/41
+  t.modules.joystick = false
+end
 --
 -- **********************************
 -- Variables utilisées dans le jeu

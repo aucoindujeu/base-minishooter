@@ -43,8 +43,9 @@ joueureuse.x = 0
 joueureuse.y = 0 
 joueureuse.vx = 0
 joueureuse.vy = 0
-joueureuse.acceleration = 500
+joueureuse.acceleration = 800
 joueureuse.vitessemax = 500
+joueureuse.resistance = 300
 joueureuse.touche = false
 joueureuse.delai = 0 
 joueureuse.chronoTir = 0
@@ -190,6 +191,14 @@ function majJoueureuse(dt)
       joueureuse.vx = joueureuse.vx - joueureuse.acceleration * dt
       if joueureuse.vx < -joueureuse.vitessemax then
         joueureuse.vx = -joueureuse.vitessemax
+      end
+    end
+
+    if love.keyboard.isDown() == false then
+      if joueureuse.vx > 0 then
+        joueureuse.vx = joueureuse.vx - joueureuse.resistance * dt
+      else
+        joueureuse.vx = joueureuse.vx + joueureuse.resistance * dt
       end
     end
 

@@ -2,3 +2,6 @@
 *.swp
 *.swo
 <
+
+#dossier config GitHub pages
+.github/

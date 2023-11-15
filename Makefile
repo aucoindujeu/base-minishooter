@@ -3,7 +3,7 @@ play:
 
 love:
 	mkdir -p dist
-	cd src && zip -r ../dist/AsteroidsRace.love .
+	cd src && zip -r ../dist/MiniShooter.love .
 
 js: love
-	love.js -c --title="Asteroids Race" ./dist/AsteroidsRace.love ./dist/js
+	love.js -c --title="Mini Shooter" ./dist/MiniShooter.love ./dist/js

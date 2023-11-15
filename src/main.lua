@@ -29,7 +29,8 @@ local cmptAbordages = 0
 -- fond / scrolling infini
 local scrolling = {}
 scrolling.camera = 0
-scrolling.img = love.graphics.newImage('images/fond.png')
+scrolling.fond = love.graphics.newImage('images/fond.png')
+scrolling.img = love.graphics.newImage('images/fond2.png')
 scrolling.h = scrolling.img:getHeight()
 
 -- Sprite Joueur
@@ -326,7 +327,7 @@ function love.update(dt)
 
     -- fond / scrolling
 
-    scrolling.camera = scrolling.camera + 30 * dt
+    scrolling.camera = scrolling.camera + 10 * dt
     if scrolling.camera >= scrolling.h then
       scrolling.camera = 0
     end
@@ -431,6 +432,7 @@ function love.draw()
 
     --affichage fond
 
+    love.graphics.draw(scrolling.fond, 0, 0)
     love.graphics.draw(scrolling.img, 0, scrolling.camera - scrolling.h)
     love.graphics.draw(scrolling.img,0, scrolling.camera)
 

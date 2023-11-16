@@ -359,17 +359,24 @@ end
 -- ***************
 -- AFFICHAGE
 -- ***************
+function ecrireCentre(pTexte, pHauteur)
+
+  love.graphics.printf(pTexte, 0, pHauteur, LARGEUR_ECRAN, 'center')
+
+end
+
 
 -- AFFICHAGE MENU
 function afficheMenu()
 
-  love.graphics.printf('appuyer sur `espace` pour lancer le jeu',
-                        0,
-                        HAUTEUR_ECRAN/2,
-                        LARGEUR_ECRAN,
-                        'center')
+  ecrireCentre('Une salve de 100 ennemis va s’abattre sur vous. Combien en détruirez-vous ?', HAUTEUR_ECRAN/2 - 100)
+  
+  ecrireCentre('Appuyer sur ‘espace‘ pour lancer le jeu', HAUTEUR_ECRAN/2) 
+ 
+  ecrireCentre('’echap‘ pour quitter le jeu à tout moment', HAUTEUR_ECRAN/2 + 50)
 
 end
+
 
 -- AFFICHAGE JOUEUREUSE
 function afficheJoueureuse()
@@ -407,26 +414,19 @@ end
 -- AFFICHAGE GAME OVER
 function afficheGameOver()
   
-  love.graphics.printf('Votre score est de : '
-                        ..tostring((cmptAbattus - cmptAbordages) * 100), 
-                        0, 
-                        HAUTEUR_ECRAN/2 - 20, 
-                        LARGEUR_ECRAN, 
-                        'center')
-  love.graphics.printf('Vous avez détruit '
-                        ..tostring(cmptAbattus + cmptAbordages)
-                        ..' ennemis sur 100, dont '
-                        ..tostring(cmptAbordages)
-                        ..' par abordage.', 
-                        0, 
-                        HAUTEUR_ECRAN/2 + 20, 
-                        LARGEUR_ECRAN, 
-                        'center')
-  love.graphics.printf('Appuyez sur ‘Entrée‘ pour revenir au menu.',
-                        0,
-                        HAUTEUR_ECRAN/2 + 60,
-                        LARGEUR_ECRAN,
-                        'center')
+  ecrireCentre('Votre score est de : '
+                ..tostring((cmptAbattus - cmptAbordages) * 100), 
+                HAUTEUR_ECRAN/2 - 60)
+                        
+  ecrireCentre('Vous avez détruit '
+                ..tostring(cmptAbattus + cmptAbordages)
+                ..' ennemis sur 100, dont '
+                ..tostring(cmptAbordages)
+                ..' par abordage.', 
+                HAUTEUR_ECRAN/2)
+
+  ecrireCentre('Appuyez sur ‘Entrée‘ pour revenir au menu.',
+               HAUTEUR_ECRAN/2 + 80)
 
 end
 

@@ -11,7 +11,7 @@ Vous pouvez tester le jeu en ligne [ici](https://aucoindujeu.github.io/base-mini
 À améliorer (graphismes, sons, etc.) ou simplement  modifier sans vergogne ! 
 Piste d’amélioration, en fonction de votre niveau :
 
-- Trouver ou créer un meilleur son pour l’explosion (pourquoi pas une explosion différente pour les destructions avec les tirs, et avec abordages), ajouter des sons pour les tirs, les accélérations... Les fichiers sons se trouvent dans le dossier [src/son/](https://github.com/aucoindujeu/base-minishooter/tree/main/src/sons)
+- Trouver ou créer un meilleur son pour l’explosion (pourquoi pas une explosion différente pour les destructions avec les tirs, et avec abordages), ajouter des sons pour les tirs, les accélérations... Les fichiers sons se trouvent dans le dossier [src/son/](https://github.com/aucoindujeu/base-minishooter/tree/main/src/sons). Astuce : jouer les sons des explosions avec des pitches aléatoirement différent pour casser la monotonie
 
 - Améliorer les graphismes : image de fond, sprites des vaisseaux, des tirs... ajouter des petites animations (lors des tirs, lors des explosions, moteur...), faire un scrolling sur plusieurs plans. Les fichiers images des sprites, du fond, etc. se trouvent dans le dossier [src/images/](https://github.com/aucoindujeu/base-minishooter/tree/main/src/images)
 

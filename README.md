@@ -11,13 +11,15 @@ Vous pouvez tester le jeu en ligne [ici](https://aucoindujeu.github.io/base-mini
 À améliorer (graphismes, sons, etc.) ou simplement  modifier sans vergogne ! 
 Piste d’amélioration, en fonction de votre niveau :
 
-- Trouver ou créer un meilleur son pour l’explosion (pourquoi pas une explosion différente pour les destructions avec les tirs, et avec abordages), ajouter des sons pour les tirs, les accélérations... régler le bug qui fait que les sons ne se « chevauchent pas ». Les fichiers sons se trouvent dans le dossier [src/son/](https://github.com/aucoindujeu/base-minishooter/tree/main/src/sons)
+- Trouver ou créer un meilleur son pour l’explosion (pourquoi pas une explosion différente pour les destructions avec les tirs, et avec abordages), ajouter des sons pour les tirs, les accélérations... Les fichiers sons se trouvent dans le dossier [src/son/](https://github.com/aucoindujeu/base-minishooter/tree/main/src/sons)
 
 - Améliorer les graphismes : image de fond, sprites des vaisseaux, des tirs... ajouter des petites animations (lors des tirs, lors des explosions, moteur...), faire un scrolling sur plusieurs plans. Les fichiers images des sprites, du fond, etc. se trouvent dans le dossier [src/images/](https://github.com/aucoindujeu/base-minishooter/tree/main/src/images)
 
 - Améliorer les écrans de démarrages et de *game over* : changer la police, ajouter des images, ajouter du texte, un titre, des explications. Trouver ou composer des musiques d’intro ou d’outro, des bruitages ou un jingle de lancement. La police de carcatère se trouve dans le dossier [src/fontes](https://github.com/aucoindujeu/base-minishooter/tree/main/src/fontes)
 
 - Modifier le gameplay. Modifier la maniabilité du vaisseau (ajouter de l’adhérence pour limiter l’effet « savonnette »), créer différents types d’ennemis (trajectoire, résistance, ils peuvent tirer aussi...), des options/bonus...
+
+- Corriger les petits bugs : on n’entends pas les sons qui suivent la première explosion lorsqu’il y a des explosions successives (les sons ne se « chevauchent pas »), le premier tir « involontaire » du vaisseau lorsque l’on appuie sur ‘espace‘ pour lancer le jeu, etc. 
 
 ## Usage
 <!-- TODO -->
